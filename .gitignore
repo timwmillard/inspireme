@@ -1,3 +1,6 @@
 .DS_Store
 
 .env
+
+cmd/inspireme/inspireme
+cmd/inspireme-api/inspireme-api
