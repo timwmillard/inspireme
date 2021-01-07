@@ -1,0 +1,42 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# InspireMe
+
+Create inspirational quote images with a cool background.
+
+## InpireMe [/inspireme]
+
+### Generate an image [POST]
+
+Generate an image from the quote and the background image URL.
+
++ Request (application/json)
+
+            {
+                "quote": "The important thing is to not stop questioning. Curiosity has its own reason for existing. Albert Einstein",
+                "backgroundUrl": "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616__340.jpg"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id": "34939439439049034909034",
+                "imageUrl": "https://inspireme.io/34939439439049034909034.png"
+            }
+
+### Delete an image [DELETE /inspireme/{id}]
+
+Delete a generate image resource form the server.
+
++ Request (application/json)
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "success": true 
+            }
