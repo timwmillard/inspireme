@@ -26,6 +26,7 @@ Or store images on Google Cloud Storage
 export BIND_ADDRESS=:8080
 export FONTS_DIR=/var/www/resources/fonts
 export INSPIREME_STORAGE=gcloud
+export GOOGLE_APPLICATION_CREDENTIALS=<path-to-credentials>
 export GCLOUD_PROJECT_ID=<gcloud-project-id>
 export GCLOUD_BUCKET=<gcloud-bucket-name>
 ./inspireme-api
