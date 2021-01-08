@@ -26,7 +26,7 @@ type ImageGenerator struct {
 
 // Storage is an interface to store the image
 type Storage interface {
-	Store(img image.Image, format string) (string, error)
+	Store(ctx context.Context, img image.Image, format string) (string, error)
 
 	// TOOD add delete method
 	// Delete(url string) error
@@ -87,7 +87,7 @@ func (im *ImageGenerator) GenerateAndStore(ctx context.Context, quote, backgroun
 		return "", err
 	}
 
-	url, err := im.Storage.Store(img, imgFormat)
+	url, err := im.Storage.Store(ctx, img, imgFormat)
 	if err != nil {
 		return "", err
 	}

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"context"
 	"fmt"
 	"image"
 	"os"
@@ -17,7 +18,7 @@ type WebLocalFile struct {
 }
 
 // Store the image to the local file system
-func (wf *WebLocalFile) Store(img image.Image, format string) (string, error) {
+func (wf *WebLocalFile) Store(ctx context.Context, img image.Image, format string) (string, error) {
 
 	id := uuid.New()
 	fileName := id.String() + "." + format

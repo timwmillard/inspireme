@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"context"
 	"fmt"
 	"image"
 	"os"
@@ -14,7 +15,7 @@ type LocalFile struct {
 }
 
 // Store the image to the local file system
-func (f *LocalFile) Store(img image.Image, format string) (string, error) {
+func (f *LocalFile) Store(ctx context.Context, img image.Image, format string) (string, error) {
 
 	file, err := os.Create(f.FileName)
 	if err != nil {

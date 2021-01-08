@@ -85,8 +85,8 @@ func imageStorage() inspireme.Storage {
 	switch inspireMeStorage {
 	case "local":
 		return webLocalStorage()
-	// case "gcloud":
-	// 	return gCloudStorage()
+	case "gcloud":
+		return gCloudStorage()
 	// case "s3":
 	// 	return s3Storage()
 	default:
@@ -127,10 +127,13 @@ func webLocalStorage() *storage.WebLocalFile {
 	return webFileStorage
 }
 
-// func gCloudStorage() *storage.GCloud {
+func gCloudStorage() *storage.GCloud {
 
-// 	return nil
-// }
+	return &storage.GCloud{
+		ProjectID: os.Getenv("GCLOUD_PROJECT_ID"),
+		Bucket:    os.Getenv("GCLOUD_BUCKET"),
+	}
+}
 
 // func s3Storage() *storage.S3 {
 

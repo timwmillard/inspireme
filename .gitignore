@@ -3,6 +3,8 @@
 .env
 
 cmd/inspireme/inspireme
-cmd/inspireme-api/inspireme-api
 
+cmd/inspireme-api/inspireme-api
 cmd/inspireme-api/images
+cmd/inspireme-api/timix-network-0d21b8a5f5ae.json
+cmd/inspireme-api/.env
