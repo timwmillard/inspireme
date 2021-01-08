@@ -9,7 +9,7 @@ import (
 	"github.com/timwmillard/inspireme"
 )
 
-func TestInspirationifier(t *testing.T) {
+func TestInspireMe(t *testing.T) {
 
 	quote := "I love Go"
 	backgroundURL := "https://images.theweek.com/sites/default/files/styles/tw_image_9_4/public/iStock_95204155_LARGE.jpg"

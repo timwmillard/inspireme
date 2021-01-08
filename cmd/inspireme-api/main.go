@@ -28,28 +28,52 @@ func main() {
 	}
 
 	// File Storage
-	fileStoragePath := os.Getenv("FILE_STORAGE_PATH")
-	if fileStoragePath == "" {
-		fileStoragePath = "."
+	imagesStoragePath := os.Getenv("IMAGES_STORAGE_PATH")
+	if imagesStoragePath == "" {
+		imagesStoragePath = "images"
+	}
+	// Create directory if not exist
+	err := os.MkdirAll(imagesStoragePath, os.ModePerm)
+	if err != nil {
+		logger.Printf("unable to create image storage path: %s", err)
+		os.Exit(1)
+	}
+
+	// File Storage
+	imagesBaseURL := os.Getenv("IMAGES_BASE_URL")
+	if imagesBaseURL == "" {
+		imagesBaseURL = "http://localhost" + bindAddress + "/images/"
+	}
+
+	webFileStorage := &storage.WebLocalFile{
+		LocalDir:      imagesStoragePath,
+		ImagesBaseURL: imagesBaseURL,
 	}
 
 	// InspireMe Image Generator
 	imgGen := &inspireme.ImageGenerator{
-		Storage:  &storage.File{Dir: fileStoragePath},
+		Storage:  webFileStorage,
 		Client:   http.DefaultClient,
 		FontsDir: fontsDir,
 	}
+
+	// Create mux handler
+	mux := http.NewServeMux()
 
 	// InspireMe HTTP Hander
 	inspiremeHandler := &inspireme.Handler{
 		Log:       logger,
 		InspireMe: imgGen,
 	}
+	mux.Handle("/", inspiremeHandler)
+
+	imageServer := http.FileServer(http.Dir(imagesStoragePath))
+	mux.Handle("/images/", http.StripPrefix("/images/", imageServer))
 
 	// HTTP Server
 	server := http.Server{
 		Addr:         bindAddress,
-		Handler:      inspiremeHandler,
+		Handler:      mux,
 		ErrorLog:     logger,
 		ReadTimeout:  5 * time.Second,   // max time to read request from the client
 		WriteTimeout: 20 * time.Second,  // max time to write response to the client
@@ -61,7 +85,7 @@ func main() {
 		logger.Printf("Starting server at %s", bindAddress)
 
 		err := server.ListenAndServe()
-		if err != nil {
+		if err != nil && err != http.ErrServerClosed {
 			logger.Printf("error starting server: %s", err)
 			os.Exit(1)
 		}

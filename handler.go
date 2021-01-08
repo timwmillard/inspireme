@@ -34,7 +34,13 @@ type postRequest struct {
 
 type postResponce struct {
 	ID       string `json:"id,omitempty"`
+	Success  bool   `json:"success,omitempty"`
 	ImageURL string `json:"imageUrl,omitempty"`
+}
+
+type postResponceError struct {
+	Success bool   `json:"success,omitempty"`
+	Message string `json:"message,omitempty"`
 }
 
 // Gererate an image
@@ -58,13 +64,18 @@ func (h *Handler) generate(w http.ResponseWriter, r *http.Request) {
 	imgURL, err := h.InspireMe.GenerateAndStore(ctx, req.Quote, req.BackgroundURL, nil)
 	if err != nil {
 		h.Log.Printf("unable to generate image: %v", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		var resp postResponceError
+		resp.Success = false
+		resp.Message = err.Error()
+		encoder := json.NewEncoder(w)
+		encoder.Encode(&resp)
 		return
 	}
-	// imgURL := "https://miro.medium.com/max/3152/1*Ifpd_HtDiK9u6h68SZgNuA.png"
 
 	var resp postResponce
 	resp.ImageURL = imgURL
+	resp.Success = true
 	encoder := json.NewEncoder(w)
 	encoder.Encode(&resp)
 }

@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path"
 
 	"github.com/timwmillard/inspireme"
+	"github.com/timwmillard/inspireme/storage"
 )
 
 func main() {
@@ -19,24 +21,25 @@ func main() {
 	message := os.Args[1]
 	backgroundURL := os.Args[2]
 
-	_ = message
+	ext := path.Ext(backgroundURL)
 
-	file, err := os.Create("inspireme.png")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating file: %v\n", err)
-		os.Exit(3)
+	localFile := &storage.LocalFile{FileName: "inspireme" + ext}
+
+	// Fonts Directory
+	fontsDir := os.Getenv("FONTS_DIR")
+	if fontsDir == "" {
+		fontsDir = "../../resources/fonts"
 	}
-	defer file.Close()
 
-	err = inspireme.Generate(context.Background(), http.DefaultClient, message, backgroundURL, nil, file)
+	imgGen := inspireme.ImageGenerator{
+		Storage:  localFile,
+		Client:   http.DefaultClient,
+		FontsDir: fontsDir,
+	}
+
+	_, err := imgGen.GenerateAndStore(context.Background(), message, backgroundURL, nil)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error fetching image: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error generating image: %v\n", err)
 		os.Exit(2)
 	}
-
-	// 	err = png.Encode(file, img)
-	// 	if err != nil {
-	// 		fmt.Fprintf(os.Stderr, "Error encoding png: %v\n", err)
-	// 		os.Exit(3)
-	// 	}
 }

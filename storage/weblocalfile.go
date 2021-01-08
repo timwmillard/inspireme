@@ -10,18 +10,18 @@ import (
 	"github.com/timwmillard/inspireme"
 )
 
-// File is a local file storage for images
-// dir contains the directory the files will be saved
-type File struct {
-	Dir string
+// WebLocalFile used for files stored in a static web server
+type WebLocalFile struct {
+	LocalDir      string
+	ImagesBaseURL string
 }
 
 // Store the image to the local file system
-func (f *File) Store(img image.Image, format string) (string, error) {
+func (wf *WebLocalFile) Store(img image.Image, format string) (string, error) {
 
 	id := uuid.New()
 	fileName := id.String() + "." + format
-	filePath := filepath.Join(f.Dir, fileName)
+	filePath := filepath.Join(wf.LocalDir, fileName)
 
 	file, err := os.Create(filePath)
 	if err != nil {
@@ -30,5 +30,7 @@ func (f *File) Store(img image.Image, format string) (string, error) {
 
 	inspireme.EncodeImage(file, img, format)
 
-	return filePath, nil
+	imgURL := filepath.Join(wf.ImagesBaseURL, fileName)
+
+	return imgURL, nil
 }

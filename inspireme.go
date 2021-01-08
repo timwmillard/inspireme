@@ -76,15 +76,6 @@ func (im *ImageGenerator) GenerateImage(message string, background image.Image, 
 	const padding = 20
 	draw.DrawStringWrapped(message, float64(draw.Width()/2), float64(draw.Height()/2), 0.5, 0.5, float64(draw.Width()-padding), 1.5, gg.AlignCenter)
 
-	// switch imgFormat {
-	// case "png":
-	// 	draw.EncodePNG(output)
-	// case "jpeg":
-	// 	draw.EncodeJPG(output, nil)
-	// default:
-	// 	return errors.New("invalid image format")
-	// }
-
 	return draw.Image(), nil
 }
 
@@ -103,24 +94,6 @@ func (im *ImageGenerator) GenerateAndStore(ctx context.Context, quote, backgroun
 
 	return url, nil
 }
-
-// Store the image
-// func (im *ImageGenerator) Store(img image.Image, format string) (string, error) {
-// 	writer := im.storage.WriteCloser(format)
-
-// 	defer writer.Close()
-
-// 	switch format {
-// 	case "png":
-// 		png.Encode(writer, img)
-// 	case "jpeg":
-// 		jpeg.Encode(writer, img, nil)
-// 	default:
-// 		return "", errors.New("invalid image formate")
-// 	}
-
-// 	return im.storage.Location(), nil
-// }
 
 // FetchImage will go to the image URL an return an in memory image
 func (im *ImageGenerator) FetchImage(ctx context.Context, url string) (image.Image, string, error) {
