@@ -73,6 +73,8 @@ func (h *Handler) generate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	h.Log.Printf("image generate success %v", imgURL)
+
 	var resp postResponce
 	resp.ImageURL = imgURL
 	resp.Success = true

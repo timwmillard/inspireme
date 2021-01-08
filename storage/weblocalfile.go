@@ -31,7 +31,5 @@ func (wf *WebLocalFile) Store(ctx context.Context, img image.Image, format strin
 
 	inspireme.EncodeImage(file, img, format)
 
-	imgURL := filepath.Join(wf.ImagesBaseURL, fileName)
-
-	return imgURL, nil
+	return wf.ImagesBaseURL + "/" + fileName, nil
 }
