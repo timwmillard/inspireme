@@ -44,7 +44,7 @@ func main() {
 		Log:       logger,
 		InspireMe: imgGen,
 	}
-	mux.Handle("/", inspiremeHandler)
+	mux.Handle("/", corsHandler(inspiremeHandler))
 
 	// HTTP Server
 	server := http.Server{
@@ -136,6 +136,20 @@ func gCloudStorage() *storage.GCloud {
 }
 
 // func s3Storage() *storage.S3 {
-
 // 	return nil
 // }
+
+// CorsHandler handles cross origin request
+func corsHandler(h http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Origin, Accept")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		h.ServeHTTP(w, r)
+	}
+}
