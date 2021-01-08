@@ -4,3 +4,5 @@
 
 cmd/inspireme/inspireme
 cmd/inspireme-api/inspireme-api
+
+cmd/inspireme-api/images
