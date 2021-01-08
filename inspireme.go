@@ -98,7 +98,10 @@ func (im *ImageGenerator) GenerateAndStore(ctx context.Context, quote, backgroun
 // FetchImage will go to the image URL an return an in memory image
 func (im *ImageGenerator) FetchImage(ctx context.Context, url string) (image.Image, string, error) {
 
-	resp, err := im.Client.Get(url)
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req.WithContext(ctx)
+
+	resp, err := im.Client.Do(req)
 	if err != nil {
 		return nil, "", fmt.Errorf("unable to fetch image URL: %v", err)
 	}
