@@ -15,8 +15,8 @@ import (
 var (
 	mux              = http.NewServeMux()
 	logger           = log.New(os.Stdout, "inspireme ", log.LstdFlags)
-	bindAddress      = os.Getenv("BIND_ADDRESS")
 	port             = os.Getenv("PORT")
+	bindAddress      = os.Getenv("BIND_ADDRESS")
 	inspireMeStorage = os.Getenv("INSPIREME_STORAGE")
 )
 
