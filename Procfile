@@ -1,1 +1,1 @@
-web: cmd/inspireme-api/inspireme-api
+web: bin/inspireme-api
