@@ -16,6 +16,7 @@ var (
 	mux              = http.NewServeMux()
 	logger           = log.New(os.Stdout, "inspireme ", log.LstdFlags)
 	bindAddress      = os.Getenv("BIND_ADDRESS")
+	port             = os.Getenv("PORT")
 	inspireMeStorage = os.Getenv("INSPIREME_STORAGE")
 )
 
@@ -23,7 +24,10 @@ func main() {
 
 	// Bind Address
 	if bindAddress == "" {
-		bindAddress = ":8080"
+		if port == "" {
+			port = "8080"
+		}
+		bindAddress = ":" + port
 	}
 
 	// Fonts Directory
