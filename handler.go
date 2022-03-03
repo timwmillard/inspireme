@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 )
 
 // Handler -
@@ -20,7 +21,7 @@ func NewHandler() *Handler {
 
 // ServeHTTP handles the routing
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// GET method
+
 	switch r.Method {
 	case http.MethodPost:
 		h.generate(w, r)
@@ -60,7 +61,10 @@ func (h *Handler) generate(w http.ResponseWriter, r *http.Request) {
 
 	h.Log.Printf("generate image \"%v\" %v", req.Quote, req.BackgroundURL)
 
-	ctx := context.TODO()
+	ctx := r.Context()
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second) // timeout to fetch image
+	defer cancel()
+
 	imgURL, err := h.InspireMe.GenerateAndStore(ctx, req.Quote, req.BackgroundURL, nil)
 	if err != nil {
 		h.Log.Printf("unable to generate image: %v", err)

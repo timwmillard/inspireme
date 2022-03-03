@@ -73,7 +73,6 @@ func main() {
 
 	exitCh := make(chan os.Signal, 1)
 	signal.Notify(exitCh, os.Interrupt)
-	signal.Notify(exitCh, os.Kill)
 
 	sig := <-exitCh
 	logger.Printf("performing gracefull shutdown due to: %v", sig)

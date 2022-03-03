@@ -11,7 +11,7 @@ const (
 
 // Styles is a way to style your quote
 type Styles struct {
-	TextColor       color.RGBA
+	TextColor       color.Color
 	Padding         int
 	HorizontalAlign int
 	VertialAlign    int

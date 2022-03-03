@@ -74,7 +74,8 @@ func (im *ImageGenerator) GenerateImage(message string, background image.Image, 
 	// Draw text message
 	draw.SetColor(color.White)
 	const padding = 20
-	draw.DrawStringWrapped(message, float64(draw.Width()/2), float64(draw.Height()/2), 0.5, 0.5, float64(draw.Width()-padding), 1.5, gg.AlignCenter)
+	const lineSpacing = 1.5
+	draw.DrawStringWrapped(message, float64(draw.Width()/2), float64(draw.Height()/2), 0.5, 0.5, float64(draw.Width()-padding), lineSpacing, gg.AlignCenter)
 
 	return draw.Image(), nil
 }
